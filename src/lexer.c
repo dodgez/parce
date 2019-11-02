@@ -1,9 +1,9 @@
 #include "lexer.h"
 
-int lex(LexemeStream lexeme_stream, char* stream, TokenStream* token_stream) {
+int lex(LexemeList lexeme_list, char* stream, TokenList* token_list) {
   int token_index = 0;
   int max_token_length = 256;
-  token_stream->tokens = (Token*)malloc(sizeof(Token) * max_token_length);
+  token_list->tokens = (Token*)malloc(sizeof(Token) * max_token_length);
   int expr_index = 0;
   int max_expr_length = 256;
   char* expr = (char*)malloc(sizeof(char) * max_expr_length);
@@ -20,24 +20,24 @@ int lex(LexemeStream lexeme_stream, char* stream, TokenStream* token_stream) {
 
     cur_lexeme = NULL;
 
-    for (int i = 0; i < lexeme_stream.size; ++i) {
-      if (!regexec(&lexeme_stream.lexemes[i].regex, expr, 0, NULL, 0)) {
-        cur_lexeme = &lexeme_stream.lexemes[i];
+    for (int i = 0; i < lexeme_list.size; ++i) {
+      if (!regexec(&lexeme_list.lexemes[i].regex, expr, 0, NULL, 0)) {
+        cur_lexeme = &lexeme_list.lexemes[i];
         break;
       }
     }
 
     if (!cur_lexeme) {
       if (last_lexeme) {
-        if ((last_lexeme->options & 1) == 0) {
+        if ((last_lexeme->flags & 1) == 0) {
           if (token_index >= max_token_length) {
             max_token_length *= 2;
-            token_stream->tokens = (Token*)realloc(token_stream->tokens, max_token_length);
+            token_list->tokens = (Token*)realloc(token_list->tokens, max_token_length);
           }
 
-          token_stream->tokens[token_index].name = last_lexeme->name;
-          token_stream->tokens[token_index].data = (char*)malloc(sizeof(char) * (expr_index - 1));
-          memcpy(token_stream->tokens[token_index].data, expr, sizeof(char) * (expr_index - 1));
+          token_list->tokens[token_index].name = last_lexeme->name;
+          token_list->tokens[token_index].data = (char*)malloc(sizeof(char) * (expr_index - 1));
+          memcpy(token_list->tokens[token_index].data, expr, sizeof(char) * (expr_index - 1));
           token_index++;
         }
 
@@ -47,8 +47,8 @@ int lex(LexemeStream lexeme_stream, char* stream, TokenStream* token_stream) {
         continue;
       } else {
         free(expr);
-        free(token_stream->tokens);
-        token_stream->size = 0;
+        free(token_list->tokens);
+        token_list->size = 0;
         return 1;
       }
     }
@@ -57,19 +57,19 @@ int lex(LexemeStream lexeme_stream, char* stream, TokenStream* token_stream) {
     last_lexeme = cur_lexeme;
   }
 
-  if (last_lexeme && (last_lexeme->options & 1) == 0) {
+  if (last_lexeme && (last_lexeme->flags & 1) == 0) {
     if (token_index >= max_token_length) {
       max_token_length *= 2;
-      token_stream->tokens = (Token*)realloc(token_stream->tokens, max_token_length);
+      token_list->tokens = (Token*)realloc(token_list->tokens, max_token_length);
     }
 
-    token_stream->tokens[token_index].name = last_lexeme->name;
-    token_stream->tokens[token_index].data = (char*)malloc(sizeof(char) * expr_index);
-    strcpy(token_stream->tokens[token_index].data, expr);
+    token_list->tokens[token_index].name = last_lexeme->name;
+    token_list->tokens[token_index].data = (char*)malloc(sizeof(char) * expr_index);
+    strcpy(token_list->tokens[token_index].data, expr);
     token_index++;
   }
 
-  token_stream->size = token_index;
+  token_list->size = token_index;
   free(expr);
   return 0;
 }
