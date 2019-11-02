@@ -40,6 +40,7 @@ int parse(Rule rule, TokenStream token_stream, ASTNode* root) {
   root->name = rule.name;
   root->children_size = 0;
   root->children = (ASTNode*)malloc(sizeof(ASTNode) * max_children_length);
+  memset(root->children, 0, sizeof(ASTNode) * max_children_length);
   root->token = NULL;
 
   for (int i = 0; i < rule.size; ++i) {
@@ -56,6 +57,7 @@ int parse(Rule rule, TokenStream token_stream, ASTNode* root) {
         if (root->children_size == max_children_length) {
           max_children_length *= 2;
           root->children = (ASTNode*)malloc(sizeof(ASTNode) * max_children_length);
+          memset(root->children, 0, sizeof(ASTNode) * max_children_length);
         }
 
         if (lexeme_rule.type == 0) {

@@ -28,10 +28,12 @@ int main(void) {
   rule.name = "NUM/ID rule";
   rule.size = 1;
   rule.options = (Option*)malloc(sizeof(Option) * rule.size);
+  memset(rule.options, 0, sizeof(Option) * rule.size);
 
   rule.options[0].size = 2;
   rule.options[0].flags = 0;
   rule.options[0].sub_option = (LexemeRule*)malloc(sizeof(LexemeRule) * rule.options[0].size);
+  memset(rule.options[0].sub_option, 0, sizeof(LexemeRule) * rule.options[0].size);
   LexemeRule* sub_option0 = (LexemeRule*)rule.options[0].sub_option;
   sub_option0[0].type = 0;
   sub_option0[0].lexeme = NUM;
@@ -43,6 +45,7 @@ int main(void) {
   token_stream.size = 1;
   token_stream.index = 0;
   token_stream.tokens = (Token*)malloc(sizeof(Token) * token_stream.size);
+  memset(token_stream.tokens, 0, sizeof(Token) * token_stream.size);
   token_stream.tokens[0].name = "ID";
   token_stream.tokens[0].data = "test";
 

@@ -4,9 +4,11 @@ int lex(LexemeList lexeme_list, char* stream, TokenStream* token_stream) {
   int token_index = 0;
   int max_token_length = 256;
   token_stream->tokens = (Token*)malloc(sizeof(Token) * max_token_length);
+  memset(token_stream->tokens, 0, sizeof(Token) * max_token_length);
   int expr_index = 0;
   int max_expr_length = 256;
   char* expr = (char*)malloc(sizeof(char) * max_expr_length);
+  memset(expr, 0, sizeof(char) * max_expr_length);
   Lexeme* last_lexeme = NULL;
   Lexeme* cur_lexeme = NULL;
 

@@ -11,6 +11,7 @@ int main(void) {
   LexemeList lexeme_list;
   lexeme_list.size = 3;
   Lexeme* lexemes = (Lexeme*)malloc(sizeof(Lexeme) * lexeme_list.size);
+  memset(lexemes, 0, sizeof(Lexeme) * lexeme_list.size);
   lexemes[0].name = "ID";
   lexemes[0].flags = 0;
   regcomp(&lexemes[0].regex, "^[a-zA-Z]\\+$", 0);
