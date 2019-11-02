@@ -3,8 +3,10 @@
 
 #include <regex.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define LEX_SUCCESS 0
+#define PARSE_SUCCESS 0
 
 // flags: bit 1 set if ignored
 typedef struct Lexeme {
@@ -48,11 +50,6 @@ typedef struct LexemeRule {
   Lexeme lexeme;
   Rule rule;
 } LexemeRule;
-
-typedef struct RuleList {
-  int size;
-  Rule* rules;
-} RuleList;
 
 typedef struct ASTNode {
   char* name;

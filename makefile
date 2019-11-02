@@ -10,9 +10,9 @@ CC = gcc
 LD = ld
 CFLAGS = -c -Wall -Werror -fpic -Iheaders
 LDFLAGS = -shared
-OBJS = $(OBJ_DIR)/lexer.o
+OBJS = $(OBJ_DIR)/lexer.o $(OBJ_DIR)/parser.o
 TARGET = $(BUILD_DIR)/libparce.so
-TESTS = $(TEST_BUILD_DIR)/lexer-spec
+TESTS = $(TEST_BUILD_DIR)/lexer-spec $(TEST_BUILD_DIR)/parser-spec
 TESTCFLAGS = -Wall -lparce -L$(BUILD_DIR) -Wl,-rpath=$(BUILD_DIR) -Iheaders
 
 all: $(OUT_DIRS) $(TARGET)
@@ -24,7 +24,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -o $@ $^
 
 test: $(OUT_DIRS) $(TARGET) $(TESTS)
-	$(TESTS)
+	for file in $(TEST_BUILD_DIR)/*; do $${file}; done
 
 $(TEST_BUILD_DIR)/%-spec: $(TEST_DIR)/%-spec.c
 	$(CC) -o $@ $^ $(TESTCFLAGS)
