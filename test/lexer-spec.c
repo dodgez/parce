@@ -6,7 +6,7 @@
 #include "lexer.h"
 
 int main(void) {
-  TokenList token_list;
+  TokenStream token_stream;
 
   LexemeList lexeme_list;
   lexeme_list.size = 3;
@@ -24,13 +24,13 @@ int main(void) {
   regcomp(&lexemes[2].regex, "^\\s\\+$", 0);
 
   lexeme_list.lexemes = lexemes;
-  int lex_result = lex(lexeme_list, "Test 0123", &token_list);
+  int lex_result = lex(lexeme_list, "Test 0123", &token_stream);
   if (lex_result == LEX_SUCCESS) {
-    for (int i = 0; i < token_list.size; ++i) {
-      printf("Found token %s with type %s\n", token_list.tokens[i].data, token_list.tokens[i].name);
+    for (int i = 0; i < token_stream.size; ++i) {
+      printf("Found token %s with type %s\n", token_stream.tokens[i].data, token_stream.tokens[i].name);
     }
 
-    free(token_list.tokens);
+    free(token_stream.tokens);
   }
 
   free(lexemes);
