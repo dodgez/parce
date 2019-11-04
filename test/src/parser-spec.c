@@ -114,11 +114,11 @@ void test_rule_two_options(void) {
 int main(void) {
   run_suite("Parser");
 
-  run_test("Parses a rule with one option");
+  run_test("parses a rule with one option");
   test_rule_one_option();
   end_test();
 
-  run_test("Parses a rule with two options");
+  run_test("parses a rule with two options");
   test_rule_two_options();
   end_test();
 

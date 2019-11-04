@@ -1,7 +1,7 @@
 #include "expect.h"
 
 void run_suite(char* name) {
-  printf("\nSuite %s\n", name);
+  printf("\n%s:\n", name);
 }
 
 void run_test(char* name) {
